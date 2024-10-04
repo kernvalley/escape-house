@@ -82,6 +82,7 @@
     "@shgysk8zer0/importmap": "^1.4.13",
     "@shgysk8zer0/rollup-import": "^1.2.5",
     "eslint": "^9.11.1",
+    "htmlhint": "^1.1.4",
     "http-server": "^14.1.1",
     "postcss-cli": "^11.0.0",
     "rollup": "^4.24.0"
