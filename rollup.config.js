@@ -1,16 +1,22 @@
 /* eslint-env node */
-import { getConfig } from '@shgysk8zer0/js-utils/rollup';
 import { rollupImport, rollupImportMeta } from '@shgysk8zer0/rollup-import';
-import { readJSONFile } from '@shgysk8zer0/npm-utils/json';
+import { readFile } from 'node:fs/promises';
+
+async function readJSONFile(file) {
+	const content = await readFile(file, { encoding: 'utf8' });
+	return JSON.parse(content);
+}
 
 const { homepage } = await readJSONFile('./package.json');
 
-export default getConfig('./js/index.js', {
+export default {
+	input: 'js/index.js',
+	output: {
+		file: 'js/index.min.js',
+		format: 'iife',
+	},
 	plugins: [
 		rollupImport('./importmap.json'),
 		rollupImportMeta({ baseURL: homepage }),
 	],
-	format: 'iife',
-	minify: true,
-	sourcemap: true,
-});
+};
