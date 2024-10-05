@@ -9,7 +9,7 @@ import { properties } from '@aegisjsproject/styles/properties.js';
 import { reset } from '@aegisjsproject/styles/reset.js';
 import { baseTheme, lightTheme, darkTheme } from '@aegisjsproject/styles/theme.js';
 import { positions } from '@aegisjsproject/styles/misc.js';
-import { btn, btnPrimary } from '@aegisjsproject/styles/button.js';
+import { btn, btnPrimary, btnLink } from '@aegisjsproject/styles/button.js';
 import { forms } from '@aegisjsproject/styles/forms.js';
 
 const styles = css`dialog {
@@ -34,12 +34,14 @@ dialog::backdrop {
 	background-color: transparent;
 }
 
-.btn.fixed {
-	right: 1.8em;
-	bottom: 1.8em;
+#scan-btn {
+	right: 1.2em;
+	bottom: 1.2em;
+	color: inherit;
+	text-decoration: none;
 }`;
 
-document.adoptedStyleSheets = [properties, reset, baseTheme, lightTheme, darkTheme, positions, btn, btnPrimary, forms, styles];
+document.adoptedStyleSheets = [properties, reset, baseTheme, lightTheme, darkTheme, positions, btn, btnPrimary, btnLink, forms, styles];
 
 const submitHandler = registerCallback('question:check', event => {
 	event.preventDefault();
@@ -115,7 +117,7 @@ globalThis.addEventListener('hashchange', () => {
 	}
 });
 
-if ('BarcodeDetector' in globalThis) {
+if ('BarcodeDetector' in globalThis || Number.MAX_SAFE_INTEGER > 0) {
 	const showPicker = registerCallback('show-picker', () => document.getElementById('scanned-img').showPicker());
 	const scanQR = registerCallback('scan-qr', async ({ target }) => {
 		if (target.files.length === 1) {
@@ -150,7 +152,7 @@ if ('BarcodeDetector' in globalThis) {
 	});
 
 	document.getElementById('footer').append(html`
-		<button type="button" id="scan-btn" class="btn btn-primary fixed" ${EVENTS.onClick}="${showPicker}">
+		<button type="button" id="scan-btn" class="btn btn-link fixed" ${EVENTS.onClick}="${showPicker}" accesskey="q">
 		<svg width="32" height="32" version="1.1" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
 			<g transform="translate(.2)">
 				<path d="m2.05 2.2802e-4s-0.51416-0.01772-1.0679 0.25926c-0.54932 0.27687-1.1821 1.0547-1.1821 1.9907v3.3749h2.25v-3.3749h3.375v-2.2499zm10.125 0v2.2499h3.375v3.3749h2.25v-3.3749c0-0.93601-0.63282-1.7138-1.1821-1.9907-0.55372-0.27681-1.0679-0.25926-1.0679-0.25926zm-9 3.3749v2.2499h2.25v-2.2499zm2.25 2.2499v2.2499h2.25v-2.2499zm3.375-2.2499v5.6249h5.625v-5.6249zm0 5.6249h-5.625v5.6249h5.625zm1.125-4.4999h3.375v3.3749h-3.375zm1.125 1.125v1.125h1.125v-1.125zm-6.75 4.4999h3.375v3.3749h-3.375zm5.625 0v3.3749h1.125v-1.125h1.125v-1.125h1.125v-1.125zm3.375 1.125v1.125h1.125v-1.125zm0 1.125h-1.125v1.125h1.125zm0 1.125v1.125h1.125v-1.125zm-1.125 0h-1.125v1.125h1.125zm-6.75-2.2499v1.125h1.125v-1.125zm-5.625 1.125v3.3749c0 0.93601 0.63282 1.7138 1.1821 1.9907 0.5537 0.27687 1.0679 0.25926 1.0679 0.25926h3.375v-2.25h-3.375v-3.3749zm15.75 0v3.3749h-3.375v2.25h3.375s0.51416 0.01772 1.0679-0.25926c0.54932-0.27687 1.1821-1.0547 1.1821-1.9907v-3.3749z" stroke-width="1.125"/>
