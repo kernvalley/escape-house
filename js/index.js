@@ -117,7 +117,7 @@ globalThis.addEventListener('hashchange', () => {
 	}
 });
 
-if ('BarcodeDetector' in globalThis || Number.MAX_SAFE_INTEGER > 0) {
+if ('BarcodeDetector' in globalThis) {
 	const showPicker = registerCallback('show-picker', () => document.getElementById('scanned-img').showPicker());
 	const scanQR = registerCallback('scan-qr', async ({ target }) => {
 		if (target.files.length === 1) {
