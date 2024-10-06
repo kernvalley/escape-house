@@ -56,7 +56,7 @@ const submitHandler = registerCallback('question:check', async event => {
 		}
 	} else if (chapter < chapters.length) {
 		clearOld();
-		const dialog = getVideo(chapters[chapter + 1]);
+		const dialog = getVideo(chapters[chapter]);
 		document.body.append(dialog);
 		dialog.showModal();
 	} else {
