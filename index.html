@@ -11,7 +11,7 @@
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="theme-color" content="#007bff" />
 		<meta name="apple-mobile-web-app-status-bar-style" content="#007bff" />
-		<title itemprop="headline">Static Template</title>
+		<title itemprop="headline">Halloween Escape House</title>
 		<script type="importmap" integrity="sha384-xGusdFhZHCHwNoqXOUdo99xbrOVmZGjIuOFOlywrI9WBX6VTQ6AuCGlf9bSZa0m2">
 			{
 				"imports": {
@@ -73,8 +73,6 @@
 			  }
 		</script>
 		<script type="application/javascript" defer="" referrerpolicy="no-referrer" crossorigin="anonymous" integrity="sha384-uaVA9Le/fIJMMUrQHZyGJ+aAH3EdIhOLxPl+cuBCvvZBltVoc+Kemy4t8KLX3/aF" src="https://unpkg.com/@shgysk8zer0/polyfills@0.4.2/all.min.js" fetchpriority="auto"></script>
-		<!-- <script type="application/javascript" defer="" referrerpolicy="no-referrer" crossorigin="anonymous" integrity="sha384-55L/wO9o0uIVTeubRIDQB4bewfNqyxrj4OXuxlW24NMEk+ioZwMHVw/tFV78mM+k" src="https://unpkg.com/@shgysk8zer0/kazoo@0.2.2/harden.js" fetchpriority="auto"></script> -->
-		<!-- <script type="text/javascript" src="https://unpkg.com/@webcomponents/custom-elements@1.4.2/custom-elements.min.js" crossorigin="anonymous" referrerpolicy="no-referrer" integrity="sha384-xyhN4T4+9VPh8uXl6uWjGzsqwNXN9C2tla8b6zSrSqYlMFUoeCdoxiEJU0js+GNE" defer="" nomodule=""></script> -->
 		<!-- <script type="module" src="./js/index.js" referrerpolicy="no-referrer"></script> -->
 		<script src="./js/index.min.js" referrerpolicy="no-referrer" defer=""></script>
 		<link rel="manifest" href="./webapp.webmanifest" />
@@ -85,12 +83,16 @@
 		<link rel="icon" type="image/png" sizes="16x16" href="./img/icon-16.png" />
 		<link rel="mask-icon" href="./img/safari-pinned-tab.svg" color="#007bff" />
 		<link rel="shortcut icon" href="./favicon.ico" />
-		<link rel="stylesheet" href="./css/index.css" media="all" />
+		<!-- <link rel="stylesheet" href="./css/index.css" media="all" /> -->
 		<!-- <link rel="stylesheet" href="./css/index.min.css" media="all" /> -->
 	</head>
 	<body id="top" class="font-main background-primary color-default overflow-x-hidden">
-		<header id="header"></header>
-		<main id="main" class="card shadow"></main>
+		<header id="header">
+			<button type="button" id="help-btn" class="btn btn-secondary" accesskey="?" popovertarget="help" popovertargetaction="show" title="Show Help" disabled="" hidden="">?</button>
+		</header>
+		<main id="main" class="card shadow">
+			<div id="questions"></div>
+		</main>
 		<footer id="footer"></footer>
 		<template id="player-template">
 			<dialog id="player-dialog" data-aegis-event-on-close="aegis:ui:remove" data-remove-selector="#player-dialog">
@@ -101,5 +103,10 @@
 				</button>
 			</dialog>
 		</template>
+		<div popover="auto" id="help">
+			<button type="button" class="btn btn-link" popovertarget="help" popovertargetaction="close">x</button>
+			<h2>Escape House Help</h2>
+			<p>I have not written this yet, but it will contain some basic instructions...</p>
+		</div>
 	</body>
 </html>
