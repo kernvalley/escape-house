@@ -1,5 +1,4 @@
-import '@shgysk8zer0/components/youtube/player.js';
-import { chapters } from './consts.js';
+import { chapters, site } from './consts.js';
 import { createYouTubeEmbed } from '@shgysk8zer0/kazoo/youtube.js';
 import { html } from '@aegisjsproject/core/parsers/html.js';
 import { css } from '@aegisjsproject/core/parsers/css.js';
@@ -9,14 +8,14 @@ import { properties } from '@aegisjsproject/styles/properties.js';
 import { reset } from '@aegisjsproject/styles/reset.js';
 import { baseTheme, lightTheme, darkTheme } from '@aegisjsproject/styles/theme.js';
 import { positions } from '@aegisjsproject/styles/misc.js';
-import { btn, btnPrimary, btnLink } from '@aegisjsproject/styles/button.js';
+import { btn, btnPrimary, btnSecondary, btnLink } from '@aegisjsproject/styles/button.js';
 import { forms } from '@aegisjsproject/styles/forms.js';
 
-const styles = css`dialog {
+const styles = css`dialog, [popover] {
 	border: none;
 }
 
-dialog::backdrop {
+dialog::backdrop, :popover-open::backdrop {
 	background-color: rgba(0, 0, 0, 0.8);
 	backdrop-filter: blur(4px);
 }
@@ -41,47 +40,120 @@ dialog::backdrop {
 	text-decoration: none;
 }`;
 
-document.adoptedStyleSheets = [properties, reset, baseTheme, lightTheme, darkTheme, positions, btn, btnPrimary, btnLink, forms, styles];
+document.adoptedStyleSheets = [properties, reset, baseTheme, lightTheme, darkTheme, positions, btn, btnPrimary, btnSecondary, btnLink, forms, styles];
 
-const submitHandler = registerCallback('question:check', event => {
+const submitHandler = registerCallback('question:check', async event => {
 	event.preventDefault();
 	const data = new FormData(event.target);
-	const chapter = chapters.findIndex(chap => chap.id === data.get('id'));
+	const chapter = findChapter(location);
+	const isCorrect = chapter !== -1 && chapters[chapter].a === data.get('answer');
 
-	if (chapter !== -1 && data.get('answer') === chapters[chapter].a) {
-		showVideo(chapter + 1);
-	} else if (chapter !== 0 && confirm('That is not correct. Would you like to re-watch the previous chapter?')) {
-		showVideo(chapter);
+	if (! isCorrect) {
+		if (confirm('That is not correct. Would you like to re-watch the previous chapter?') && history.state !== null) {
+			const dialog = getVideo(chapters[chapter - 1]);
+			document.body.append(dialog);
+			dialog.showModal();
+		}
+	} else if (chapter < chapters.length) {
+		clearOld();
+		const dialog = getVideo(chapters[chapter + 1]);
+		document.body.append(dialog);
+		dialog.showModal();
+	} else {
+		triggerEnd();
 	}
 });
 
-async function showVideo(chapter) {
-	const { vid, width, height } = chapters[chapter];
-	const { resolve, promise } = Promise.withResolvers();
+function findChapter(url = location) {
+	if (url.hash.length > 2) {
+		const id = url.hash.substring(1).toLowerCase();
+		const chapter = chapters.findIndex(chap => chap.id === id);
+		return Math.max(0, chapter);
+	} else {
+		return 0;
+	}
+}
+
+function triggerEnd() {
+	alert('All done...');
+}
+
+function updatePage(chapterData) {
+	if (typeof chapterData !== 'object' || chapterData === null) {
+		setChapter(0);
+	} else if (typeof chapterData.q === 'string') {
+		const question = getQuestion(chapterData);
+		document.title = `${site.title} - Chapter ${chapterData.chapter + 1}`;
+		clearOld();
+		document.getElementById('questions').replaceChildren(question);
+	} else {
+		const dialog = getVideo(chapterData);
+		clearOld();
+		document.body.append(dialog);
+		dialog.showModal();
+		document.title = `${site.title} - Chapter ${chapterData.chapter + 1}`;
+	}
+}
+
+function setChapter(chapter) {
+	if (chapter >= chapters.length) {
+		triggerEnd();
+	} else if (Number.isSafeInteger(chapter) && chapter > -1) {
+		const newChap = chapters[chapter];
+		newChap.chapter = chapter;
+		const url = new URL(location.href);
+		url.hash = newChap.id;
+		history.pushState(newChap, document.title, url.href);
+		updatePage(newChap);
+	} else {
+		alert(`Invalid chapter: ${chapter}`);
+	}
+}
+
+function clearOld() {
+	const open = document.querySelector('dialog[open]');
+	const q = document.querySelector('form.chapter-question');
+
+	if (open instanceof HTMLDialogElement) {
+		open.close();
+	}
+
+	if (q instanceof HTMLFormElement) {
+		q.remove();
+	}
+}
+
+function getVideo({ vid, width, height }) {
 	const yt = createYouTubeEmbed(vid, { width, height });
 	const tmp = document.getElementById('player-template').content.cloneNode(true);
 	const dialog = tmp.querySelector('dialog');
 	yt.classList.add('yt-player');
 	dialog.append(yt);
-	dialog.addEventListener('close', resolve, { once: true });
-	document.body.append(dialog);
-	dialog.showModal();
 
-	await promise;
+	dialog.animate([
+		{ transform: 'scale(0)', opacity: 0 },
+		{ transform: 'none', opacity: 1 },
+	], {
+		duration: 500,
+		easing: 'ease-out',
+		fill: 'forwards',
+		delay: 100,
+	});
+
+	return dialog;
 }
 
-function setQuestion(chapter) {
-	const { id, q, opts } = chapters[chapter];
-	const form = html`<form ${EVENTS.onSubmit}="${submitHandler}">
+function getQuestion({ id, q, opts, chapter }) {
+	const form = html`<form ${EVENTS.onSubmit}="${submitHandler}" class="chapter-question">
 		<fieldset class="no-border">
 			<legend><b>Chapter ${chapter + 1}</b></legend>
 			<div class="form-group">
 				<label for="${id}-opts" class="input-label">${q}</label>
 				<select name="answer" id="${id}-opts" class="input" required="">
-					${opts.map(opt => `<option>${opt}</option>`)}
+					${opts.map(opt => `<option>${opt}</option>`).join('')}
 				</select>
 			</div>
-			<input type="hidden" name="id" value="${id}" readonly />
+			<input type="hidden" name="id" value="${id}" readonly="" />
 			<button type="submit" class="btn btn-primary">
 				<svg xmlns="http://www.w3.org/2000/svg" width="12" height="16" viewBox="0 0 12 16" fill="currentColor">
 					<path fill-rule="evenodd" d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5L12 5z"/>
@@ -90,35 +162,21 @@ function setQuestion(chapter) {
 		</fieldset>
 	</form>`;
 
-	document.getElementById('main').replaceChildren(form);
+	return form;
 }
 
-if (location.hash.length < 2) {
-	showVideo(0);
-} else {
-	const id = location.hash.substring(1).toLowerCase();
-	const chapter = chapters.findIndex(chap => chap.id === id);
-
-	if (chapter === -1) {
-		showVideo(0);
+globalThis.addEventListener('popstate', event => {
+	if (event.state !== null) {
+		updatePage(event.state);
 	} else {
-		setQuestion(chapter);
-	}
-}
-
-globalThis.addEventListener('hashchange', () => {
-	const id = location.hash.substring(1).toLowerCase();
-	const chapter = chapters.findIndex(chap => chap.id === id);
-
-	if (chapter === -1) {
-		showVideo(0);
-	} else {
-		setQuestion(chapter);
+		const chapter = findChapter(location);
+		setChapter(chapter);
 	}
 });
 
 if ('BarcodeDetector' in globalThis) {
 	const showPicker = registerCallback('show-picker', () => document.getElementById('scanned-img').showPicker());
+
 	const scanQR = registerCallback('scan-qr', async ({ target }) => {
 		if (target.files.length === 1) {
 			const img = document.createElement('img');
@@ -131,17 +189,9 @@ if ('BarcodeDetector' in globalThis) {
 
 				if (decoded.length !== 0) {
 					const url = URL.parse(decoded[0].rawValue);
+					const chapter = findChapter(url);
+					setChapter(chapter);
 
-					if (url instanceof URL && url.hash.length > 2) {
-						const hash = url.hash.substring(1).toLowerCase();
-						const chapter = chapters.findIndex(chap => chap.id === hash);
-
-						if (chapter !== -1) {
-							setQuestion(chapter);
-						} else {
-							alert('Not found.');
-						}
-					}
 				}
 			} catch(err) {
 				console.error(err);
@@ -166,3 +216,18 @@ if ('BarcodeDetector' in globalThis) {
 }
 
 observeEvents();
+
+if (location.hash.length > 2) {
+	const chapter = findChapter(location);
+	setChapter(chapter);
+} else if (typeof history.state === 'object' && history.state !== null) {
+	updatePage(history.state);
+} else {
+	setChapter(0);
+}
+
+if ('popover' in HTMLElement.prototype) {
+	const btn = document.getElementById('help-btn');
+	btn.disabled = false;
+	btn.hidden = false;
+}
