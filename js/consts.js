@@ -13,22 +13,22 @@ export const site = {
 export const chapters = [{
 	// Chapter 1... No question
 	id: 'faad3bf2-b002-4e22-a360-8b7d1dddfcb4',
-	vid: 'o6fxiitfh0w',
-	width: 475,
-	height: 845,
+	vid: 'w99WXGz96sk',
+	width: 560,
+	height: 315,
 }, {
-	// Chapter 3... No question
+	// Chapter 2... No question
 	id: '4da2d55e-32c5-4293-962c-b1f6ca91a08d',
-	vid: '24XwveAmDEk',
-	width: 475,
-	height: 845,
+	vid: '4L2n7_92A1s',
+	width: 560,
+	height: 315,
 }, {
 	// Chapter 3
 	id: 'ae9b3d38-a7e1-4bb7-a46f-7037089a9976',
-	vid: 'U70wTL78fe8',
+	vid: 'J5CdXcCABU0',
 	q: 'What was he struggling with getting used to?',
-	width: 475,
-	height: 845,
+	width: 560,
+	height: 315,
 	opts: ['The quiet', 'The change of environment', 'The altitude', 'The water'],
 	a: 3,
 }, {
@@ -43,10 +43,10 @@ export const chapters = [{
 }, {
 	// Chapter 5
 	id: 'bcb3eea-753a-4f54-b3f0-298caeac7d47',
-	vid: 'U70wTL78fe8',
+	vid: 'PfgiU5qBWUE',
 	q: 'What was the neighbor doing?',
-	width: 475,
-	height: 845,
+	width: 560,
+	height: 315,
 	opts: ['Walking her dog', 'Borrowing a ladder', 'Helping with chores', 'Inviting him to a BBQ'],
 	a: 0,
 }, {
