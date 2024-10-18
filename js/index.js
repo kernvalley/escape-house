@@ -7,7 +7,7 @@ import { registerCallback } from '@aegisjsproject/core/callbackRegistry.js';
 import { properties } from '@aegisjsproject/styles/properties.js';
 import { reset } from '@aegisjsproject/styles/reset.js';
 import { baseTheme, lightTheme, darkTheme } from '@aegisjsproject/styles/theme.js';
-import { positions } from '@aegisjsproject/styles/misc.js';
+import { positions, displays } from '@aegisjsproject/styles/misc.js';
 import { btn, btnPrimary, btnSecondary, btnLink } from '@aegisjsproject/styles/button.js';
 import { forms } from '@aegisjsproject/styles/forms.js';
 
@@ -28,6 +28,12 @@ dialog::backdrop, :popover-open::backdrop {
 	max-width: 100%;
 }
 
+.container {
+	padding: 1.4rem;
+	width: min(800px, 95%);
+	margin-inline: auto;
+}
+
 .btn.btn-transparent {
 	border: none;
 	background-color: transparent;
@@ -40,7 +46,7 @@ dialog::backdrop, :popover-open::backdrop {
 	text-decoration: none;
 }`;
 
-document.adoptedStyleSheets = [properties, reset, baseTheme, lightTheme, darkTheme, positions, btn, btnPrimary, btnSecondary, btnLink, forms, styles];
+document.adoptedStyleSheets = [properties, reset, baseTheme, lightTheme, darkTheme, positions, displays, btn, btnPrimary, btnSecondary, btnLink, forms, styles];
 
 const submitHandler = registerCallback('question:check', async event => {
 	event.preventDefault();
@@ -75,7 +81,7 @@ function findChapter(url = location) {
 }
 
 function triggerEnd() {
-	alert('All done...');
+	alert('All done...The combo to the chest will be "water".');
 }
 
 function updatePage(chapterData) {
@@ -104,6 +110,7 @@ function setChapter(chapter) {
 		const url = new URL(location.href);
 		url.hash = newChap.id;
 		history.pushState(newChap, document.title, url.href);
+		document.getElementById('instructions').open = chapter === 0;
 		updatePage(newChap);
 	} else {
 		alert(`Invalid chapter: ${chapter}`);

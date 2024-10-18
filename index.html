@@ -72,7 +72,7 @@
 				"scope": {}
 			  }
 		</script>
-		<script type="application/javascript" defer="" referrerpolicy="no-referrer" crossorigin="anonymous" integrity="sha384-uaVA9Le/fIJMMUrQHZyGJ+aAH3EdIhOLxPl+cuBCvvZBltVoc+Kemy4t8KLX3/aF" src="https://unpkg.com/@shgysk8zer0/polyfills@0.4.2/all.min.js" fetchpriority="auto"></script>
+		<script type="application/javascript" defer="" referrerpolicy="no-referrer" crossorigin="anonymous" integrity="sha384-uaVA9Le/fIJMMUrQHZyGJ+aAH3EdIhOLxPl+cuBCvvZBltVoc+Kemy4t8KLX3/aF" src="https://unpkg.com/@shgysk8zer0/polyfills@0.4.2/all.min.js" fetchpriority="high"></script>
 		<!-- <script type="module" src="./js/index.js" referrerpolicy="no-referrer"></script> -->
 		<script src="./js/index.min.js" referrerpolicy="no-referrer" defer=""></script>
 		<link rel="manifest" href="./webapp.webmanifest" />
@@ -88,10 +88,46 @@
 	</head>
 	<body id="top" class="font-main background-primary color-default overflow-x-hidden">
 		<header id="header">
-			<button type="button" id="help-btn" class="btn btn-secondary" accesskey="?" popovertarget="help" popovertargetaction="show" title="Show Help" disabled="" hidden="">?</button>
+			<!-- <button type="button" id="help-btn" class="btn btn-secondary" accesskey="?" popovertarget="help" popovertargetaction="show" title="Show Help" disabled="" hidden="">?</button> -->
 		</header>
-		<main id="main" class="card shadow">
+		<main id="main" class="card shadow container">
 			<div id="questions"></div>
+			<section>
+				<details id="instructions" open="">
+					<summary>
+						<h2 class="inline-block btn btn-outline-primary">Escape House Intructions &amp; Rules</h2>
+					</summary>
+					<h3>Instructions</h3>
+					<p>Welcome to the Escape House + Maze!</p>
+					<p>The objective of this activity is find QR codes to scan to unlock the next chapter. Watch the videos carefully,
+						as they contain clues for where to find the next QR code. By the third chapter, you will also be asked a simple
+						question about the contents of the previous video, just to ensure you follow the chapters in order.
+					</p>
+					<p>QR codes found on hidden items will be labeled with the chapter number they should be found on.
+						If you are on chapter 3, for example, and you find a QR code labelled as being for chapter 6,
+						you have found it out of order and are probably in the wrong room.
+					</p>
+					<p>Where supported, there is a QR code reader built into this web app. It should work on Chrome for Android, but not on iOS.
+						It does not work perfectly, but may be more conventient for some.
+					</p>
+					<h3>Rules</h3>
+					<ul>
+						<li>No more than one group in a room at a time. The central room is for waiting any any group ahead of you.</li>
+						<li>Please be careful with furniture and objects. You do not have to force or lift anything.</li>
+						<li>Please put everything back in place when leaving a room.</li>
+						<li>Be gentle with the walls. They may not support being leaned against.</li>
+						<li>At no point are you trapped. Should you decide to give up, you may simply skip to the maze through the living room.</li>
+					</ul>
+				</details>
+			</section>
+			<section id="map">
+				<details>
+					<summary>
+						<h2 class="inline-block btn btn-outline-primary">Cabin Map</h2>
+					</summary>
+					<img src="./img/map.svg" alt="Cabin Map" loading="lazy" referrerpolicy="no-referrer" />
+				</details>
+			</section>
 		</main>
 		<footer id="footer"></footer>
 		<template id="player-template">
@@ -103,10 +139,10 @@
 				</button>
 			</dialog>
 		</template>
-		<div popover="auto" id="help">
+		<!-- <div popover="auto" id="help">
 			<button type="button" class="btn btn-link" popovertarget="help" popovertargetaction="close">x</button>
 			<h2>Escape House Help</h2>
 			<p>I have not written this yet, but it will contain some basic instructions...</p>
-		</div>
+		</div> -->
 	</body>
 </html>
