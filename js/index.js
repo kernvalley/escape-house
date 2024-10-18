@@ -46,7 +46,7 @@ const submitHandler = registerCallback('question:check', async event => {
 	event.preventDefault();
 	const data = new FormData(event.target);
 	const chapter = findChapter(location);
-	const isCorrect = chapter !== -1 && chapters[chapter].a === data.get('answer');
+	const isCorrect = chapter !== -1 && chapters[chapter].opts[chapters[chapter].a] === data.get('answer');
 
 	if (! isCorrect) {
 		if (confirm('That is not correct. Would you like to re-watch the previous chapter?') && history.state !== null) {
@@ -150,6 +150,7 @@ function getQuestion({ id, q, opts, chapter }) {
 			<div class="form-group">
 				<label for="${id}-opts" class="input-label">${q}</label>
 				<select name="answer" id="${id}-opts" class="input" required="">
+					<option value="" label="Please select the answer given in the previous video"></option>
 					${opts.map(opt => `<option>${opt}</option>`).join('')}
 				</select>
 			</div>
