@@ -4,11 +4,11 @@ import { html } from '@aegisjsproject/core/parsers/html.js';
 import { css } from '@aegisjsproject/core/parsers/css.js';
 import { EVENTS, observeEvents } from '@aegisjsproject/core/events.js';
 import { registerCallback } from '@aegisjsproject/core/callbackRegistry.js';
-import { properties } from '@aegisjsproject/styles/properties.js';
+import { properties, propertiesLegacy } from '@aegisjsproject/styles/properties.js';
 import { reset } from '@aegisjsproject/styles/reset.js';
 import { baseTheme, lightTheme, darkTheme } from '@aegisjsproject/styles/theme.js';
 import { positions, displays } from '@aegisjsproject/styles/misc.js';
-import { btn, btnPrimary, btnSecondary, btnLink } from '@aegisjsproject/styles/button.js';
+import { btn, btnPrimary, btnOutlinePrimary, btnSecondary, btnLink } from '@aegisjsproject/styles/button.js';
 import { forms } from '@aegisjsproject/styles/forms.js';
 
 const styles = css`dialog, [popover] {
@@ -22,6 +22,10 @@ dialog::backdrop, :popover-open::backdrop {
 
 .no-border {
 	border: none;
+}
+
+.full-width {
+	width: 100%;
 }
 
 .yt-player {
@@ -46,7 +50,10 @@ dialog::backdrop, :popover-open::backdrop {
 	text-decoration: none;
 }`;
 
-document.adoptedStyleSheets = [properties, reset, baseTheme, lightTheme, darkTheme, positions, displays, btn, btnPrimary, btnSecondary, btnLink, forms, styles];
+document.adoptedStyleSheets = [
+	properties, propertiesLegacy, reset, baseTheme, lightTheme, darkTheme, positions, displays, btn,
+	btnPrimary, btnOutlinePrimary, btnSecondary, btnLink, forms, styles,
+];
 
 const submitHandler = registerCallback('question:check', async event => {
 	event.preventDefault();

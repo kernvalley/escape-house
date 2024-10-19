@@ -35,10 +35,10 @@ export const chapters = [{
 	// Chapter 4
 	id: '1f0f5297-597f-4fa7-92c3-d13b273bf7f7',
 	vid: 'U70wTL78fe8',
-	q: 'What is starting to cause him pain?',
+	q: 'Was keeping him up at night?',
 	width: 475,
 	height: 845,
-	opts: ['His bad neck', 'His tooth', 'The sounds he hears', 'A dog bite'],
+	opts: ['His bad neck', 'His tooth', 'The sounds and animals', 'A dog bite'],
 	a: 2,
 }, {
 	// Chapter 5
