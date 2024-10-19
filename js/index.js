@@ -241,8 +241,8 @@ if (location.hash.length > 2) {
 	setChapter(0);
 }
 
-if ('popover' in HTMLElement.prototype) {
-	const btn = document.getElementById('help-btn');
-	btn.disabled = false;
-	btn.hidden = false;
-}
+// if ('popover' in HTMLElement.prototype) {
+// 	const btn = document.getElementById('help-btn');
+// 	btn.disabled = false;
+// 	btn.hidden = false;
+// }
